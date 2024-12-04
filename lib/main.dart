@@ -1,4 +1,6 @@
+import 'package:ecomm/pages/product_detail_page.dart';
 import 'package:ecomm/pages/products_overview_page.dart';
+import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,8 +23,21 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
         fontFamily: 'Lato',
+        appBarTheme: AppBarTheme(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
       ),
       home: ProductsOverviewPage(),
+      routes: {
+        AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailPage()
+      },
       debugShowCheckedModeBanner: false,
     );
   }

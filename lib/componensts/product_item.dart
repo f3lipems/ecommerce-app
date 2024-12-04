@@ -1,4 +1,6 @@
 import 'package:ecomm/models/product.dart';
+import 'package:ecomm/pages/product_detail_page.dart';
+import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
@@ -28,9 +30,14 @@ class ProductItem extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        child: Image.network(
-          product.imageUrl,
-          fit: BoxFit.cover,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(AppRoutes.PRODUCT_DETAIL, arguments: product);
+          },
+          child: Image.network(
+            product.imageUrl,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
