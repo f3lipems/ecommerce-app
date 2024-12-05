@@ -1,15 +1,17 @@
 import 'package:ecomm/componensts/product_item.dart';
 import 'package:ecomm/models/product.dart';
+import 'package:ecomm/models/product_list.dart';
 import 'package:flutter/material.dart';
-import '../data/dummy_data.dart';
+import 'package:provider/provider.dart';
 
 class ProductsOverviewPage extends StatelessWidget {
   ProductsOverviewPage({super.key});
 
-  final List<Product> loadedProducts = dummyProducts;
-
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProductList>(context);
+    final List<Product> loadedProducts = provider.items;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Store'),

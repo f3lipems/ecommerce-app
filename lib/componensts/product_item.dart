@@ -1,5 +1,4 @@
 import 'package:ecomm/models/product.dart';
-import 'package:ecomm/pages/product_detail_page.dart';
 import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
