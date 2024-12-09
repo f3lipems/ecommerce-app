@@ -13,22 +13,3 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 }
-
-// List<Product> get items {
-//     if (_showFavoriteOnly) {
-//       return _items.where((product) => product.isFavorite).toList();
-//     }
-//     return [..._items];
-//   }
-
-//   bool _showFavoriteOnly = false;
-
-//   void showFavoriteOnly() {
-//     _showFavoriteOnly = true;
-//     notifyListeners();
-//   }
-
-//   void showAll() {
-//     _showFavoriteOnly = false;
-//     notifyListeners();
-//   }
