@@ -1,4 +1,5 @@
 import 'package:ecomm/componensts/product_grid.dart';
+import 'package:ecomm/models/cart.dart';
 import 'package:ecomm/models/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,26 +26,36 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         title: const Text('My Store'),
         actions: [
           PopupMenuButton(
-              icon: const Icon(Icons.more_vert),
-              onSelected: (FilterOptions selectedValue) {
-                setState(() {
-                  if (selectedValue == FilterOptions.Favorite) {
-                    _showFavoriteOnly = true;
-                  } else {
-                    _showFavoriteOnly = false;
-                  }
-                });
-              },
-              itemBuilder: (_) => [
-                    const PopupMenuItem(
-                      value: FilterOptions.Favorite,
-                      child: Text('Favoritos'),
-                    ),
-                    const PopupMenuItem(
-                      value: FilterOptions.All,
-                      child: Text('Todos'),
-                    ),
-                  ])
+            icon: const Icon(Icons.more_vert),
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favorite) {
+                  _showFavoriteOnly = true;
+                } else {
+                  _showFavoriteOnly = false;
+                }
+              });
+            },
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                value: FilterOptions.Favorite,
+                child: Text('Favoritos'),
+              ),
+              const PopupMenuItem(
+                value: FilterOptions.All,
+                child: Text('Todos'),
+              ),
+            ],
+          ),
+          Consumer<Cart>(
+            builder: (ctx, cart, child) => IconButton(
+              onPressed: () {},
+              icon: Badge(
+                label: Text(cart.itemsCount.toString()),
+                child: const Icon(Icons.shopping_cart),
+              ),
+            ),
+          ),
         ],
       ),
       body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
