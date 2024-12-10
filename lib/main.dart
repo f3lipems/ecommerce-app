@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         home: ProductsOverviewPage(),
         routes: {
+          AppRoutes.HOME: (ctx) => const ProductsOverviewPage(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
           AppRoutes.CART : (ctx) => const CartPage(),
         },

@@ -1,5 +1,6 @@
 import 'package:ecomm/componensts/cart_item.dart';
 import 'package:ecomm/models/cart.dart';
+import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,12 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(AppRoutes.HOME);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const Text('Carrinho'),
       ),
       body: Column(
@@ -55,10 +62,12 @@ class CartPage extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (ctx, idx) => CartItemWidget(cartItem: items[idx]),
-          ),),
+          Expanded(
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (ctx, idx) => CartItemWidget(cartItem: items[idx]),
+            ),
+          ),
         ],
       ),
     );
