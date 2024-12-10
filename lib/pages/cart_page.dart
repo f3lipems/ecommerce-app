@@ -1,3 +1,4 @@
+import 'package:ecomm/componensts/cart_item.dart';
 import 'package:ecomm/models/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Cart cart = Provider.of(context);
+    final items = cart.items.values.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +51,11 @@ class CartPage extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Expanded(child: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (ctx, idx) => CartItemWidget(cartItem: items[idx]),
+          ),),
         ],
       ),
     );
