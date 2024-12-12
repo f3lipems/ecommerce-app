@@ -8,7 +8,7 @@ class OrderList with ChangeNotifier{
 
   List<Order> _orders = [];
 
-  List<Order> get orders => [..._orders];
+  List<Order> get items => [..._orders];
 
   int get itemsCount => _orders.length;
 
