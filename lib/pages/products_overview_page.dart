@@ -1,3 +1,4 @@
+import 'package:ecomm/componensts/app_drawer.dart';
 import 'package:ecomm/componensts/product_grid.dart';
 import 'package:ecomm/models/cart.dart';
 import 'package:ecomm/utils/app_routes.dart';
@@ -61,6 +62,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
       ),
       body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
+      drawer: const AppDrawer(),
     );
   }
 }
