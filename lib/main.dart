@@ -4,6 +4,7 @@ import 'package:ecomm/models/product_list.dart';
 import 'package:ecomm/pages/cart_page.dart';
 import 'package:ecomm/pages/orders_page.dart';
 import 'package:ecomm/pages/product_detail_page.dart';
+import 'package:ecomm/pages/products_page.dart';
 import 'package:ecomm/pages/products_overview_page.dart';
 import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
           AppRoutes.CART : (ctx) => const CartPage(),
           AppRoutes.ORDERS : (ctx) => const OrdersPage(),
+          AppRoutes.PRODUCTS : (ctx) => const ProductsPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
