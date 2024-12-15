@@ -1,6 +1,7 @@
 import 'package:ecomm/componensts/app_drawer.dart';
 import 'package:ecomm/componensts/product_item.dart';
 import 'package:ecomm/models/product_list.dart';
+import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,15 @@ class ProductsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Produtos'),
+        title: const Text('Gerenciar Produtos'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.PRODUCT_FORM);
+            },
+          ),
+        ],
       ),
       drawer: const AppDrawer(),
       body: Padding(
