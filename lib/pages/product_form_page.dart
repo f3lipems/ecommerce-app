@@ -10,6 +10,8 @@ class ProductFormPage extends StatefulWidget {
 class _ProductFormPageState extends State<ProductFormPage> {
   @override
   Widget build(BuildContext context) {
+    final _priceFocus = FocusNode();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulário de Produto'),
@@ -17,29 +19,30 @@ class _ProductFormPageState extends State<ProductFormPage> {
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
-          child: Column(
+          child: ListView(
             children: [
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Nome'),
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_priceFocus);
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                textInputAction: TextInputAction.next,
+                focusNode: _priceFocus,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'URL da Imagem'),
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Salvar'),
-                  ),
-                ],
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Salvar'),
               ),
             ],
-          ),
+          )
         ),
       ),
     );
