@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:ecomm/models/product.dart';
+import 'package:ecomm/models/product_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -58,13 +58,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
     _formKey.currentState?.save();
 
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      price: _formData['price'] as double,
-      description: _formData['description'] as String,
-      imageUrl: _formData['imageUrl'] as String,
-    );
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).addProductFromData(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -115,30 +113,29 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   validator: (priceField) {
                     final priceValue = priceField ?? '';
                     final priceParsed = double.tryParse(priceValue) ?? -1;
-                    if(priceParsed <= 0) {
+                    if (priceParsed <= 0) {
                       return 'Informe um preço válido';
                     }
                     return null;
                   },
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Descrição'),
-                  textInputAction: TextInputAction.next,
-                  focusNode: _descriptionFocus,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 3,
-                  onSaved: (description) => _formData['description'] = description ?? '',
-                  validator: (descriptionField) {
-                    final descriptionValue = descriptionField ?? '';
-                    if (descriptionValue.trim().isEmpty) {
-                      return 'Informe uma descrição válida';
-                    }
-                    if (descriptionValue.length < 10) {
-                      return 'Descrição precisa ter no mínimo 10 caracteres';
-                    }
-                    return null;
-                  } 
-                ),
+                    decoration: const InputDecoration(labelText: 'Descrição'),
+                    textInputAction: TextInputAction.next,
+                    focusNode: _descriptionFocus,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    onSaved: (description) => _formData['description'] = description ?? '',
+                    validator: (descriptionField) {
+                      final descriptionValue = descriptionField ?? '';
+                      if (descriptionValue.trim().isEmpty) {
+                        return 'Informe uma descrição válida';
+                      }
+                      if (descriptionValue.length < 10) {
+                        return 'Descrição precisa ter no mínimo 10 caracteres';
+                      }
+                      return null;
+                    }),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
