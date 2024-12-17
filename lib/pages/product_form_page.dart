@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:ecomm/models/product.dart';
@@ -38,9 +37,28 @@ class _ProductFormPageState extends State<ProductFormPage> {
     setState(() {});
   }
 
+  bool isValidImageUrl(String url) {
+    final urlPattern = RegExp(
+      r'http(s)?://'
+      r'(www\.)?'
+      r'([a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+    );
+    bool isValidePath = Uri.tryParse(url)?.hasAbsolutePath ?? false;
+    bool endsWithImage =
+        url.toLowerCase().endsWith('.png') || url.toLowerCase().endsWith('.jpg') || url.toLowerCase().endsWith('.jpeg');
+
+    return urlPattern.hasMatch(url) && isValidePath && endsWithImage;
+  }
+
   void _submitForm() {
+    final _isValid = _formKey.currentState?.validate() ?? false;
+    if (!_isValid) {
+      return;
+    }
+
     _formKey.currentState?.save();
-    final newProduct = Product (
+
+    final newProduct = Product(
       id: Random().nextDouble().toString(),
       name: _formData['name'] as String,
       price: _formData['price'] as double,
@@ -74,6 +92,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     FocusScope.of(context).requestFocus(_priceFocus);
                   },
                   onSaved: (name) => _formData['name'] = name ?? '',
+                  validator: (nameField) {
+                    final nameValue = nameField ?? '';
+                    if (nameValue.trim().isEmpty) {
+                      return 'Informe um nome válido';
+                    }
+                    if (nameValue.length < 3) {
+                      return 'Nome precisa ter no mínimo 3 caracteres';
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Preço'),
@@ -84,6 +112,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     FocusScope.of(context).requestFocus(_descriptionFocus);
                   },
                   onSaved: (price) => _formData['price'] = double.parse(price ?? '0'),
+                  validator: (priceField) {
+                    final priceValue = priceField ?? '';
+                    final priceParsed = double.tryParse(priceValue) ?? -1;
+                    if(priceParsed <= 0) {
+                      return 'Informe um preço válido';
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Descrição'),
@@ -92,6 +128,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
                   onSaved: (description) => _formData['description'] = description ?? '',
+                  validator: (descriptionField) {
+                    final descriptionValue = descriptionField ?? '';
+                    if (descriptionValue.trim().isEmpty) {
+                      return 'Informe uma descrição válida';
+                    }
+                    if (descriptionValue.length < 10) {
+                      return 'Descrição precisa ter no mínimo 10 caracteres';
+                    }
+                    return null;
+                  } 
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -105,6 +151,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         controller: _imageUrlController,
                         onFieldSubmitted: (_) => _submitForm(),
                         onSaved: (imageUrl) => _formData['imageUrl'] = imageUrl ?? '',
+                        validator: (imageUrlField) {
+                          final imageUrlValue = imageUrlField ?? '';
+                          if (!isValidImageUrl(imageUrlValue)) {
+                            return 'Informe uma URL válida';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     Container(
@@ -133,10 +186,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                   ],
                 ),
-                // ElevatedButton(
-                //   onPressed: () {},
-                //   child: const Text('Salvar'),
-                // ),
               ],
             )),
       ),
