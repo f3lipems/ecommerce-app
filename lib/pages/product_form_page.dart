@@ -25,6 +25,22 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final arg = ModalRoute.of(context)?.settings.arguments;
+    if (arg != null) {
+      final product = arg as Product;
+      _formData['id'] = product.id;
+      _formData['name'] = product.name;
+      _formData['price'] = product.price;
+      _formData['description'] = product.description;
+      _formData['imageUrl'] = product.imageUrl;
+      _imageUrlController.text = product.imageUrl;
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _priceFocus.dispose();
@@ -61,7 +77,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).addProductFromData(_formData);
+    ).saveProduct(_formData);
     Navigator.of(context).pop();
   }
 
@@ -84,6 +100,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             child: ListView(
               children: [
                 TextFormField(
+                  initialValue: _formData['name']?.toString(),
                   decoration: const InputDecoration(labelText: 'Nome'),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
@@ -102,6 +119,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
+                  initialValue: _formData['price']?.toString(),
                   decoration: const InputDecoration(labelText: 'Preço'),
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   textInputAction: TextInputAction.next,
@@ -120,22 +138,24 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                    decoration: const InputDecoration(labelText: 'Descrição'),
-                    textInputAction: TextInputAction.next,
-                    focusNode: _descriptionFocus,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                    onSaved: (description) => _formData['description'] = description ?? '',
-                    validator: (descriptionField) {
-                      final descriptionValue = descriptionField ?? '';
-                      if (descriptionValue.trim().isEmpty) {
-                        return 'Informe uma descrição válida';
-                      }
-                      if (descriptionValue.length < 10) {
-                        return 'Descrição precisa ter no mínimo 10 caracteres';
-                      }
-                      return null;
-                    }),
+                  initialValue: _formData['description']?.toString(),
+                  decoration: const InputDecoration(labelText: 'Descrição'),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _descriptionFocus,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 3,
+                  onSaved: (description) => _formData['description'] = description ?? '',
+                  validator: (descriptionField) {
+                    final descriptionValue = descriptionField ?? '';
+                    if (descriptionValue.trim().isEmpty) {
+                      return 'Informe uma descrição válida';
+                    }
+                    if (descriptionValue.length < 10) {
+                      return 'Descrição precisa ter no mínimo 10 caracteres';
+                    }
+                    return null;
+                  },
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
