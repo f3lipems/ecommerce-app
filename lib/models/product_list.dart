@@ -16,8 +16,8 @@ class ProductList with ChangeNotifier {
     if (response.body == 'null') {
       return Future.value();
     }
-    
-    Map<String, dynamic> data = json.decode(response.body) ;
+
+    Map<String, dynamic> data = json.decode(response.body);
 
     _items.clear();
     if (data.isNotEmpty) {
@@ -78,9 +78,21 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     final index = _items.indexWhere((prod) => prod.id == product.id);
+
     if (index >= 0) {
+      final postResponse = await http.patch(
+        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        body: json.encode(
+          {
+            'name': product.name,
+            'price': product.price,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+          },
+        ),
+      );
       _items[index] = product;
       notifyListeners();
     }
