@@ -13,10 +13,14 @@ class ProductList with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get(Uri.parse('$_baseUrl/products.json'));
-    Map<String, dynamic> data = json.decode(response.body);
+    if (response.body == 'null') {
+      return Future.value();
+    }
+    
+    Map<String, dynamic> data = json.decode(response.body) ;
 
     _items.clear();
-    if (data != null) {
+    if (data.isNotEmpty) {
       data.forEach((productId, productData) {
         _items.add(Product(
           id: productId,
