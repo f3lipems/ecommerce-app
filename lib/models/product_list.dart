@@ -13,19 +13,30 @@ class ProductList with ChangeNotifier {
   List<Product> get favoriteItems => [..._items].where((product) => product.isFavorite).toList();
 
   void addProduct(Product product) {
-    http.post(
+    final postFuture = http.post(
       Uri.parse('$_baseUrl/products.json'),
-      body: json.encode({
-        'name': product.name,
-        'price': product.price,
-        'description': product.description,
-        'imageUrl': product.imageUrl,
-        'isFavorite': product.isFavorite,
-      }),
+      body: json.encode(
+        {
+          'name': product.name,
+          'price': product.price,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'isFavorite': product.isFavorite,
+        },
+      ),
     );
 
-    _items.add(product);
-    notifyListeners();
+    postFuture.then((response) {
+      _items.add(Product(
+        id: json.decode(response.body)['name'],
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        isFavorite: product.isFavorite,
+      ));
+      notifyListeners();
+    });
   }
 
   void saveProduct(Map<String, Object> data) {
