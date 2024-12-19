@@ -1,16 +1,29 @@
+import 'dart:convert';
 import 'dart:math';
-
 import 'package:ecomm/data/dummy_data.dart';
 import 'package:ecomm/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
   final List<Product> _items = dummyProducts;
+  final _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => [..._items].where((product) => product.isFavorite).toList();
 
   void addProduct(Product product) {
+    http.post(
+      Uri.parse('$_baseUrl/products.json'),
+      body: json.encode({
+        'name': product.name,
+        'price': product.price,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'isFavorite': product.isFavorite,
+      }),
+    );
+
     _items.add(product);
     notifyListeners();
   }
