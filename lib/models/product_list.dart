@@ -1,16 +1,36 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:ecomm/data/dummy_data.dart';
 import 'package:ecomm/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = dummyProducts;
+  final List<Product> _items = [];
   final _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => [..._items].where((product) => product.isFavorite).toList();
+
+  Future<void> loadProducts() async {
+    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    Map<String, dynamic> data = json.decode(response.body);
+
+    _items.clear();
+    if (data != null) {
+      data.forEach((productId, productData) {
+        _items.add(Product(
+          id: productId,
+          name: productData['name'],
+          price: productData['price'],
+          description: productData['description'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: productData['isFavorite'],
+        ));
+      });
+      notifyListeners();
+    }
+    return Future.value();
+  }
 
   Future<void> saveProduct(Map<String, Object> data) {
     bool hasId = data.containsKey('id');
@@ -29,8 +49,8 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  Future<void> addProduct(Product product) {
-    final postFuture = http.post(
+  Future<void> addProduct(Product product) async {
+    final postResponse = await http.post(
       Uri.parse('$_baseUrl/products.json'),
       body: json.encode(
         {
@@ -43,17 +63,15 @@ class ProductList with ChangeNotifier {
       ),
     );
 
-    return postFuture.then<void>((response) {
-      _items.add(Product(
-        id: json.decode(response.body)['name'],
-        name: product.name,
-        price: product.price,
-        description: product.description,
-        imageUrl: product.imageUrl,
-        isFavorite: product.isFavorite,
-      ));
-      notifyListeners();
-    });
+    _items.add(Product(
+      id: json.decode(postResponse.body)['name'],
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      imageUrl: product.imageUrl,
+      isFavorite: product.isFavorite,
+    ));
+    notifyListeners();
   }
 
   Future<void> updateProduct(Product product) {
