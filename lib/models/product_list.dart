@@ -100,9 +100,23 @@ class ProductList with ChangeNotifier {
     return Future.value();
   }
 
-  void deleteProduct(Product product) {
-    _items.removeWhere((prod) => prod.id == product.id);
-    notifyListeners();
+  Future<void> deleteProduct(Product product) async {
+    int index = _items.indexWhere((prod) => prod.id == product.id);
+
+    if (index >= 0) {
+      final product = _items[index];
+      _items.remove(product);
+      notifyListeners();
+
+      final deleteResponse = await http.delete(
+        Uri.parse('$_baseUrl/products/${product.id}.json'),
+      );
+
+      if (deleteResponse.statusCode >= 400) {
+        _items.insert(index, product);
+        notifyListeners();
+      }
+    }
   }
 
   int get itemsCount {
