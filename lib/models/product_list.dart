@@ -100,22 +100,34 @@ class ProductList with ChangeNotifier {
 
     return Future.value();
   }
-  
+
   Future<void> updateProductFavorite(Product product) async {
     final index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
-      notifyListeners();
-      
-      final postResponse = await http.patch(
-        Uri.parse('$_baseUrl/products/${product.id}.json'),
-        body: json.encode(
-          {
-            'isFavorite': product.isFavorite,
-          },
-        ),
-      );
-      _items[index] = product;
+      try {
+        notifyListeners();
+
+        final patchResponse = await http.patch(
+          Uri.parse('$_baseUrl/products/${product.id}.json'),
+          body: json.encode(
+            {
+              'isFavorite': product.isFavorite,
+            },
+          ),
+        );
+        _items[index] = product;
+
+        if (patchResponse.statusCode >= 400) {
+          product.isFavorite = !product.isFavorite;
+          notifyListeners();
+          throw const HttpException('Não foi possível atualizar o produto como favorito.');
+        }
+      } catch (e) {
+        product.isFavorite = !product.isFavorite;
+        notifyListeners();
+        throw const HttpException('Não foi possível atualizar o produto como favorito.');
+      }
     }
 
     return Future.value();
