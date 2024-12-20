@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:ecomm/models/product.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,8 @@ class ProductList with ChangeNotifier {
       if (deleteResponse.statusCode >= 400) {
         _items.insert(index, product);
         notifyListeners();
+
+        throw const HttpException('Não foi possível excluir o produto.');
       }
     }
   }

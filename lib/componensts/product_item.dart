@@ -48,19 +48,27 @@ class ProductItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                ).then((value) {
+                ).then((value) async {
                   if (value) {
-                    Provider.of<ProductList>(
-                      context,
-                      listen: false,
-                    ).deleteProduct(product);
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Produto ${product.name} excluído com sucesso!'),
-                        duration: const Duration(seconds: 3),
-                      ),
-                    );
+                    try {
+                      await Provider.of<ProductList>(
+                        context,
+                        listen: false,
+                      ).deleteProduct(product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Produto ${product.name} excluído com sucesso!'),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(error.toString()),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    }
                   }
                 });
               },
