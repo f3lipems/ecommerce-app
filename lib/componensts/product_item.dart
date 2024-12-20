@@ -48,27 +48,26 @@ class ProductItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                ).then((value) async {
+                ).then((value) {
                   if (value) {
-                    try {
-                      await Provider.of<ProductList>(
-                        context,
-                        listen: false,
-                      ).deleteProduct(product);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Produto ${product.name} excluído com sucesso!'),
-                          duration: const Duration(seconds: 3),
-                        ),
-                      );
-                    } catch (error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(error.toString()),
-                          duration: const Duration(seconds: 3),
-                        ),
-                      );
-                    }
+                    Provider.of<ProductList>(
+                      context,
+                      listen: false,
+                    ).deleteProduct(product).then((_) {
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: Text('Produto ${product.name} excluído com sucesso!'),
+                      //     duration: const Duration(seconds: 3),
+                      //   ),
+                      // );
+                    }).catchError((error) {
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content: Text(error.toString()),
+                      //     duration: const Duration(seconds: 3),
+                      //   ),
+                      // );
+                    });
                   }
                 });
               },

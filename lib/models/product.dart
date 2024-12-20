@@ -1,4 +1,6 @@
+import 'package:ecomm/models/product_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,8 +19,9 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite() {
+  void toggleFavorite(BuildContext context) {
     isFavorite = !isFavorite;
+    Provider.of<ProductList>(context, listen: false).updateProductFavorite(this);
     notifyListeners();
   }
 }

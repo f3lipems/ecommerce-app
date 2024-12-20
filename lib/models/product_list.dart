@@ -100,6 +100,26 @@ class ProductList with ChangeNotifier {
 
     return Future.value();
   }
+  
+  Future<void> updateProductFavorite(Product product) async {
+    final index = _items.indexWhere((prod) => prod.id == product.id);
+
+    if (index >= 0) {
+      notifyListeners();
+      
+      final postResponse = await http.patch(
+        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        body: json.encode(
+          {
+            'isFavorite': product.isFavorite,
+          },
+        ),
+      );
+      _items[index] = product;
+    }
+
+    return Future.value();
+  }
 
   Future<void> deleteProduct(Product product) async {
     int index = _items.indexWhere((prod) => prod.id == product.id);
