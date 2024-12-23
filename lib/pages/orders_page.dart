@@ -4,30 +4,11 @@ import 'package:ecomm/models/order_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class OrdersPage extends StatefulWidget {
+class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
 
   @override
-  State<OrdersPage> createState() => _OrdersPageState();
-}
-
-class _OrdersPageState extends State<OrdersPage> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<OrderList>(context, listen: false).loadOrders().then((_) {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final OrderList orders = Provider.of(context);
-
     Future<void> _refreshOrders(BuildContext context) {
       return Provider.of<OrderList>(context, listen: false).loadOrders();
     }
@@ -37,16 +18,29 @@ class _OrdersPageState extends State<OrdersPage> {
         title: const Text('Meus Pedidos'),
       ),
       drawer: const AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshOrders(context),
-        child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemCount: orders.itemsCount,
-                itemBuilder: (ctx, idx) => OrderWidget(order: orders.items[idx]),
+      body: FutureBuilder(
+        future: Provider.of<OrderList>(context, listen: false).loadOrders(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.error != null) {
+            return const Center(
+              child: Text('Ocorreu um erro!'),
+            );
+          } else {
+            return RefreshIndicator(
+              onRefresh: () => _refreshOrders(context),
+              child: Consumer<OrderList>(
+                builder: (ctx, orders, child) => ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (ctx, idx) => OrderWidget(order: orders.items[idx]),
+                ),
               ),
+            );
+          }
+        },
       ),
     );
   }
