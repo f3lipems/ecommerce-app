@@ -34,7 +34,6 @@ class ProductList with ChangeNotifier {
       });
       notifyListeners();
     }
-    return Future.value();
   }
 
   Future<void> saveProduct(Map<String, Object> data) {
