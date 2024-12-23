@@ -28,19 +28,26 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget build(BuildContext context) {
     final OrderList orders = Provider.of(context);
 
+    Future<void> _refreshOrders(BuildContext context) {
+      return Provider.of<OrderList>(context, listen: false).loadOrders();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meus Pedidos'),
       ),
       drawer: const AppDrawer(),
-      body: _isLoading
-          ? const Center(
-            child: CircularProgressIndicator(),
-          )
-          : ListView.builder(
-              itemCount: orders.itemsCount,
-              itemBuilder: (ctx, idx) => OrderWidget(order: orders.items[idx]),
-            ),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshOrders(context),
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: orders.itemsCount,
+                itemBuilder: (ctx, idx) => OrderWidget(order: orders.items[idx]),
+              ),
+      ),
     );
   }
 }
