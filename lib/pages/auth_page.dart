@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:ecomm/componensts/auth_form.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatelessWidget {
@@ -26,6 +29,8 @@ class AuthPage extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 20,
               children: [
                 Container(
                   width: 100,
@@ -35,20 +40,34 @@ class AuthPage extends StatelessWidget {
                   ),
                   // child: Image.asset('assets/images/logo.png'),
                 ),
-                const Text(
-                  'Faça login para continuar',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 70,
+                    vertical: 10,
+                  ),
+                  transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                        offset: Offset(0, 2),
+                      ), 
+                    ]
+                  ),
+                  child: const Text(
+                    'Loja Virtual',
+                    style: TextStyle(
+                      fontSize: 32,
+                      color: Colors.white,
+                      fontFamily: 'Anton',
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Entrar'),
-                ),
+                const AuthForm(),
               ],
             ),
           ),
