@@ -1,6 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:ecomm/models/auth.dart';
+import 'package:provider/provider.dart';
+import 'dart:math';
 
 enum AuthMode { Signup, Login }
 
@@ -34,7 +35,8 @@ class _AuthFormState extends State<AuthForm> {
     });
   }
 
-  void _submit() {
+  Future<void> _submit() async {
+    print('clicl');
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
@@ -42,10 +44,13 @@ class _AuthFormState extends State<AuthForm> {
 
     setState(() => _isLoading = true);
     _formKey.currentState?.save();
+    Auth _auth = Provider.of<Auth>(context, listen: false);
     if (_isLogin()) {
+      print('login');
       // Logar
     } else {
-      // Registrar
+      print('Entrou aqui');
+      await _auth.signup(_authData['email']!, _authData['password']!);
     }
 
     setState(() => _isLoading = false);
@@ -64,6 +69,7 @@ class _AuthFormState extends State<AuthForm> {
         height: 380,
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -1,3 +1,4 @@
+import 'package:ecomm/models/auth.dart';
 import 'package:ecomm/models/cart.dart';
 import 'package:ecomm/models/order_list.dart';
 import 'package:ecomm/models/product_list.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => OrderList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Auth(),
         ),
       ],
       child: MaterialApp(
