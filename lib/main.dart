@@ -2,13 +2,12 @@ import 'package:ecomm/models/auth.dart';
 import 'package:ecomm/models/cart.dart';
 import 'package:ecomm/models/order_list.dart';
 import 'package:ecomm/models/product_list.dart';
-import 'package:ecomm/pages/auth_page.dart';
+import 'package:ecomm/pages/auth_or_home_page.dart';
 import 'package:ecomm/pages/cart_page.dart';
 import 'package:ecomm/pages/orders_page.dart';
 import 'package:ecomm/pages/product_detail_page.dart';
 import 'package:ecomm/pages/product_form_page.dart';
 import 'package:ecomm/pages/products_page.dart';
-import 'package:ecomm/pages/products_overview_page.dart';
 import 'package:ecomm/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,15 +58,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        // home: const ProductsOverviewPage(),
         routes: {
-          AppRoutes.AUTH: (ctx) => const AuthPage(),
-          AppRoutes.HOME: (ctx) => const ProductsOverviewPage(),
+          AppRoutes.AUTH_OR_HOME: (ctx) => const AuthOrHomePage(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
-          AppRoutes.CART : (ctx) => const CartPage(),
-          AppRoutes.ORDERS : (ctx) => const OrdersPage(),
-          AppRoutes.PRODUCTS : (ctx) => const ProductsPage(),
-          AppRoutes.PRODUCT_FORM : (ctx) => const ProductFormPage(),
+          AppRoutes.CART: (ctx) => const CartPage(),
+          AppRoutes.ORDERS: (ctx) => const OrdersPage(),
+          AppRoutes.PRODUCTS: (ctx) => const ProductsPage(),
+          AppRoutes.PRODUCT_FORM: (ctx) => const ProductFormPage(),
         },
         debugShowCheckedModeBanner: false,
       ),

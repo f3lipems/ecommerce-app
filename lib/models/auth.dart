@@ -13,7 +13,7 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
 
   bool get isAuth {
-    final isValid = _expiryDate!.isAfter(DateTime.now());
+    final isValid = _expiryDate != null && _expiryDate!.isAfter(DateTime.now());
     return _token != null && isValid;
   }
 
