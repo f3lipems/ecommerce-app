@@ -6,14 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = [];
+
+  ProductList(this._token, this._items);
+  
+  String _token;
+  List<Product> _items = [];
+
   final _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => [..._items].where((product) => product.isFavorite).toList();
 
   Future<void> loadProducts() async {
-    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    final response = await http.get(Uri.parse('$_baseUrl/products.json?auth=$_token'));
     if (response.body == 'null') {
       return Future.value();
     }
