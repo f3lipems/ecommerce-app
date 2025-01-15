@@ -8,12 +8,14 @@ import 'package:flutter/material.dart';
 class OrderList with ChangeNotifier {
   OrderList([
     this._token = '',
+    this._userId = '',
     this._orders = const [],
   ]);
 
   static const _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
   String _token;
+  String _userId;
   List<Order> _orders = [];
 
   List<Order> get items => [..._orders];
@@ -23,7 +25,7 @@ class OrderList with ChangeNotifier {
   Future<void> loadOrders() async {
     List<Order> orders = [];
 
-    final response = await http.get(Uri.parse('$_baseUrl/orders.json?auth=$_token'));
+    final response = await http.get(Uri.parse('$_baseUrl/orders/$_userId.json?auth=$_token'));
     if (response.body == 'null') {
       return Future.value();
     }
@@ -66,7 +68,7 @@ class OrderList with ChangeNotifier {
         .toList();
 
     final postResponse = await http.post(
-      Uri.parse('$_baseUrl/orders.json?auth=$_token'),
+      Uri.parse('$_baseUrl/orders/$_userId.json?auth=$_token'),
       body: json.encode(
         {
           'total': cart.totalAmount,
