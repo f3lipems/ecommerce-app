@@ -7,8 +7,12 @@ import 'package:ecomm/models/order.dart';
 import 'package:flutter/material.dart';
 
 class OrderList with ChangeNotifier {
+  
+  OrderList(this._token, this._orders);
+
   static const _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
+  String _token;
   List<Order> _orders = [];
 
   List<Order> get items => [..._orders];
@@ -16,17 +20,18 @@ class OrderList with ChangeNotifier {
   int get itemsCount => _orders.length;
 
   Future<void> loadOrders() async {
-    final response = await http.get(Uri.parse('$_baseUrl/orders.json'));
+    List<Order> orders = [];
+
+    final response = await http.get(Uri.parse('$_baseUrl/orders.json?auth=$_token'));
     if (response.body == 'null') {
       return Future.value();
     }
-    _orders.clear();
 
     Map<String, dynamic> data = jsonDecode(response.body);
 
     if (data.isNotEmpty) {
       data.forEach((orderId, orderData) {
-        _orders.add(Order(
+        orders.add(Order(
           id: orderId,
           date: DateTime.parse(orderData['date']),
           amount: orderData['total'],
@@ -41,6 +46,7 @@ class OrderList with ChangeNotifier {
           }).toList(),
         ));
       });
+      _orders = orders.reversed.toList();
       notifyListeners();
     }
   }
@@ -59,7 +65,7 @@ class OrderList with ChangeNotifier {
         .toList();
 
     final postResponse = await http.post(
-      Uri.parse('$_baseUrl/orders.json'),
+      Uri.parse('$_baseUrl/orders.json?auth=$_token'),
       body: json.encode(
         {
           'total': cart.totalAmount,
