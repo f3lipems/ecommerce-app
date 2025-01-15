@@ -6,10 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
+  ProductList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
-  ProductList(this._token, this._items);
-  
   String _token;
+  String _userId;
   List<Product> _items = [];
 
   final _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
@@ -22,19 +26,24 @@ class ProductList with ChangeNotifier {
     if (response.body == 'null') {
       return Future.value();
     }
-
     Map<String, dynamic> data = json.decode(response.body);
+
+    final favoritesResponse = await http.get(
+      Uri.parse('$_baseUrl/userFavorites/$_userId.json?auth=$_token'),
+    );
+    Map<String, dynamic> favoritesData = favoritesResponse.body.isEmpty ? {} : json.decode(favoritesResponse.body);
 
     _items.clear();
     if (data.isNotEmpty) {
       data.forEach((productId, productData) {
+        final isFavorite =  favoritesData[productId] ?? false;
         _items.add(Product(
           id: productId,
           name: productData['name'],
           price: productData['price'],
           description: productData['description'],
           imageUrl: productData['imageUrl'],
-          isFavorite: productData['isFavorite'],
+          isFavorite: isFavorite,
         ));
       });
       notifyListeners();
@@ -67,7 +76,6 @@ class ProductList with ChangeNotifier {
           'price': product.price,
           'description': product.description,
           'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
         },
       ),
     );
@@ -112,13 +120,9 @@ class ProductList with ChangeNotifier {
       try {
         notifyListeners();
 
-        final patchResponse = await http.patch(
-          Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'),
-          body: json.encode(
-            {
-              'isFavorite': product.isFavorite,
-            },
-          ),
+        final patchResponse = await http.put(
+          Uri.parse('$_baseUrl/userFavorites/$_userId/${product.id}.json?auth=$_token'),
+          body: json.encode(product.isFavorite),
         );
         _items[index] = product;
 

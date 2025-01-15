@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'package:ecomm/models/cart_item.dart';
-import 'package:ecomm/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:ecomm/models/cart.dart';
 import 'package:ecomm/models/order.dart';
 import 'package:flutter/material.dart';
 
 class OrderList with ChangeNotifier {
-  
-  OrderList(this._token, this._orders);
+  OrderList([
+    this._token = '',
+    this._orders = const [],
+  ]);
 
   static const _baseUrl = 'https://ecomm-flutterlab-default-rtdb.firebaseio.com';
 
