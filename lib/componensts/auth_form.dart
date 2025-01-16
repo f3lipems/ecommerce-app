@@ -2,7 +2,6 @@ import 'package:ecomm/exceptions/auth_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:ecomm/models/auth.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 
 enum AuthMode { Signup, Login }
 

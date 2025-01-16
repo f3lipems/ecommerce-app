@@ -19,9 +19,11 @@ class Store {
   static Future<Map<String, dynamic>?> getMap(String key) async {
     final value = await get(key);
     if (value != null) {
-      return jsonDecode(value) as Map<String, dynamic>;
+      if (value.isNotEmpty) {
+        return jsonDecode(value) as Map<String, dynamic>;
+      }
     }
-    return null;
+    return {};
   }
 
   static Future<bool> remove(String key) async {
