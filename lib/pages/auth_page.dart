@@ -24,51 +24,55 @@ class AuthPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 20,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  margin: const EdgeInsets.only(
-                    bottom: 20,
-                  ),
-                  // child: Image.asset('assets/images/logo.png'),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 70,
-                    vertical: 10,
-                  ),
-                  transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                        offset: Offset(0, 2),
-                      ), 
-                    ]
-                  ),
-                  child: const Text(
-                    'Loja Virtual',
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.white,
-                      fontFamily: 'Anton',
+          Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 20,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      margin: const EdgeInsets.only(
+                        bottom: 20,
+                      ),
+                      // child: Image.asset('assets/images/logo.png'),
                     ),
-                  ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 70,
+                        vertical: 10,
+                      ),
+                      transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(0, 2),
+                          ), 
+                        ]
+                      ),
+                      child: const Text(
+                        'Loja Virtual',
+                        style: TextStyle(
+                          fontSize: 32,
+                          color: Colors.white,
+                          fontFamily: 'Anton',
+                        ),
+                      ),
+                    ),
+                    const AuthForm(),
+                  ],
                 ),
-                const AuthForm(),
-              ],
+              ),
             ),
           ),
         ],

@@ -45,12 +45,12 @@ class _AuthFormState extends State<AuthForm> with SingleTickerProviderStateMixin
     ).animate(
       CurvedAnimation(
         parent: _controller!,
-        curve: Curves.linear,
+        curve: Curves.easeIn,
       ),
     );
     
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.8),
+      begin: const Offset(0, -1.7),
       end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
