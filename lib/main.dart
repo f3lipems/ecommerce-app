@@ -9,6 +9,7 @@ import 'package:ecomm/pages/product_detail_page.dart';
 import 'package:ecomm/pages/product_form_page.dart';
 import 'package:ecomm/pages/products_page.dart';
 import 'package:ecomm/utils/app_routes.dart';
+import 'package:ecomm/utils/custom_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,6 +67,12 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
               fontSize: 20,
             ),
+          ),
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: {
+              TargetPlatform.iOS: CustomPageTransitionBuilder(),
+              TargetPlatform.android: CustomPageTransitionBuilder(),
+            },
           ),
         ),
         routes: {
