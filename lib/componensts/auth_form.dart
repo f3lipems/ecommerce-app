@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:ecomm/exceptions/auth_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:ecomm/models/auth.dart';
