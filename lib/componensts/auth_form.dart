@@ -93,7 +93,6 @@ class _AuthFormState extends State<AuthForm> with SingleTickerProviderStateMixin
   }
 
   Future<void> _submit() async {
-    print('clicl');
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;

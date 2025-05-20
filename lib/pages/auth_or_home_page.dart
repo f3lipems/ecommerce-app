@@ -20,7 +20,6 @@ class AuthOrHomePage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.error != null) {
-            print(snapshot.error.toString());
             return Center(
               child: Text(snapshot.error.toString()),
             );
